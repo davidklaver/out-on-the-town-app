@@ -1,0 +1,25 @@
+<h1>Enter an area:</h1>
+<%= form_tag '/', method: :get do %>
+  <%= label_tag :area %>
+  <%= text_field_tag :area %>
+  <%= submit_tag "Search" %>
+<% end %>
+
+<% if @places %>
+	<h2>Here are the places in that area:</h2>
+	<% @places.each do |place| %>
+		<h4><%= place["name"] %></h4>
+		<p>Price Level: <%= place["price_level"] %></p>
+		<p>Rating: <%= place["rating"] %></p>
+		<h5>Hours:</h5>
+		<% if place["hours"] %>
+		 <% place["hours"].each do |day| %>
+		 <p><%= day %></p>
+		 <% end %>
+		<% else %>
+			<p>Opening hours were not provided by this location</p>
+		<% end %>
+		<br>
+	<% end %>
+
+<% end %>

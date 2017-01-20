@@ -1,0 +1,21 @@
+<h1>Let's create an itinerary!</h1>
+<%= form_tag "/itineraries/suggested_itinerary", method: :get do %>
+<h6>Please enter an area you'd like to go to:
+<%= label_tag %>
+  <%= text_field_tag :area, nil, required: true %></h6>
+	<h6> How many places would you like to go? 
+		<%= select_tag(:number_of_places, options_for_select([1,2,3,4,5],3)) %>
+	</h6>
+
+	<h6>
+		2. Approximately how much is the most you'd like to spend per person? <%= select_tag(:budget, options_for_select([["Doesn't Matter","no"],["$25",2],["$50",3],["$75",4],["$100",5],["$125",6],["$150",7]])) %>
+	</h6>
+	<h6>
+	<h5>Would you like to include a place to eat on your trip?</h5>
+	<h6><%= radio_button_tag(:include_eatery?, "Yes", checked: true) %>
+		<%= label_tag(:yes, "Yes") %></h6>
+	<h6><%= radio_button_tag(:include_eatery?, "No") %>
+		<%= label_tag(:no, "No") %></h6>
+	</h6>
+	<%= submit_tag "Create Itinerary", class: "btn btn-primary" %>
+<% end %>
