@@ -1,0 +1,13 @@
+<div class="homeContainer">
+ 	<video loop muted autoplay class="bgVideo" src="assets/bgvid2.mp4"></video>
+	 <div class="screen"></div>
+	 <h1 class="homeHeading">Out On The Town</h1>
+	 <h4  class="homeSubHeading">Plan The Perfect Day.</h4>
+	 <a href="/itineraries/new"><button type="button" class="btn btn-lg btn-primary">Plan Itinerary</button></a>
+	 <% if current_user %>
+	 	<a href="/itineraries"><button type="button" class="btn btn-lg btn-primary">View Saved Itineraries</button></a>
+ 	<% else %>
+	 	<a href="/login"><button type="button" class="btn btn-lg btn-primary">Log In</button></a>
+	<% end %>
+</div>
+	<footer><p>Copyright &copy;2016 by DK Design. All Rights Reserved.</p></footer>

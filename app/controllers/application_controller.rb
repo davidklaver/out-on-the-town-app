@@ -12,4 +12,9 @@ class ApplicationController < ActionController::Base
    def authenticate_admin!
     redirect_to '/products' unless current_user && current_user.admin
   end
+
+  def current_page
+    @current_page = nil
+  end
+  helper_method :current_page
 end

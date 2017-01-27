@@ -1,0 +1,9 @@
+<div class="indexContainer">
+	<div class="screen"></div>
+	<h1>Here are your saved itineraries:</h1>
+	<div class="itinerariesDiv">
+		<% @itineraries.each do |itinerary| %>
+			<h5><a href="/itineraries/<%= itinerary.id %>"><%= itinerary.pretty_time %></a></h5>
+		<% end %>
+	</div>
+</div>

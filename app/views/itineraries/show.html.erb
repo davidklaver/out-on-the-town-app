@@ -1,85 +1,94 @@
-<h1>Here's Your Suggested Itinerary:</h1>
-<% @places_array.each do |place| %>
-	<div class="container-fluid placeDiv">	
-		<h3 class="placeHeading"><%= place[:name] %></h3>
- 		<p><a href="<%= place[:website] %>" target="_blank">Visit Website</a><p>
-		<div class="col-md-7">
-			<% if place[:sunday_hours] == "" %>
-				<p>Please contact this location for hours of operation.</p>
-			<% else %>
-				<p>Hours:</p>
-				<p><%= place[:sunday_hours] %></p>
-				<p><%= place[:monday_hours] %></p>
-				<p><%= place[:tuesday_hours] %></p>
-				<p><%= place[:wednesday_hours] %></p>
-				<p><%= place[:thursday_hours] %></p>
-				<p><%= place[:friday_hours] %></p>
-				<p><%= place[:saturday_hours] %></p>
-			<% end %>
-		</div>
-		<div class="col-md-5">
-			<p>Address:</p>
-			<p><%= place[:address].chomp(', USA') %></p>
-			<p>Price Level: <%= place[:price_level] %></p>
-			<p>Rating: <%= place[:rating] %></p>
-			<p>Phone: <%= place[:phone] %></p>
-			<p>Categories: <%= place[:type1] + ", " + place[:type2] %></p>
-		</div>
-	</div>
-<% end %>
+<div class="showDiv"></div>
 
-<%= form_tag "/itineraries", method: :post do %>
-  <% @places_array.each_with_index do |place_hash, index| %>
-    <% place_hash.each do |key,value| %>    
-      	<input class="test" type="hidden" name="all_places_hash[place<%= index %>][<%= key %>]" value="<%= value %>">
+  <h1 class="showHeading">Here's Your Suggested Itinerary:</h1>
+  <% @places_array.each do |place| %>
+  	<div class="container-fluid placeDiv">	
+      
+      <h3 class="placeHeading"><%= place[:name] %></h3>
+      <p><a href="<%= place[:website] %>" target="_blank">Visit Website</a><p>
+      <div class="col-md-7">
+        <% if place[:sunday_hours] == "" %>
+  				<p>Please contact this location for hours of operation.</p>
+  			<% else %>
+  				<p>Hours:</p>
+  				<p><%= place[:sunday_hours] %></p>
+  				<p><%= place[:monday_hours] %></p>
+  				<p><%= place[:tuesday_hours] %></p>
+  				<p><%= place[:wednesday_hours] %></p>
+  				<p><%= place[:thursday_hours] %></p>
+  				<p><%= place[:friday_hours] %></p>
+  				<p><%= place[:saturday_hours] %></p>
+  			<% end %>
+  		</div>
+  		<div class="col-md-5">
+  			<p>Address:</p>
+  			<p><%= place[:address].chomp(', USA') %></p>
+  			<p>Price Level: <%= @price_level_array[place[:price_level]] %></p>
+  			<p>Rating: <%= place[:rating] %></p>
+  			<p>Phone: <%= place[:phone] %></p>
+  			<p>Categories: <%= place[:type1] + ", " + place[:type2] %></p>
+  		</div>
+  	</div>
+  <% end %>
+  
+
+  <!-- <h3>You can expect to spend approximately $<%= @total_price_level %> on this itinerary.</h3> -->
+      <style>
+         #map {
+          height: 500px;
+          width: 60%;
+          margin: 0 20% 20px 20%;
+          border: 5px solid #555;
+          box-shadow: 10px 10px 10px black;
+         }
+      </style>
+<div class="mapDiv">
+      <h2>Map</h2>
+      <div id="map"></div>
+  <% if !@saved %>
+    <%= form_tag "/itineraries", method: :post do %>
+      <% @places_array.each_with_index do |place_hash, index| %>
+        <% place_hash.each do |key, value| %>    
+            <input class="test" type="hidden" name="all_places_hash[place<%= index %>][<%= key %>]" value="<%= value %>">
+        <% end %>
+      <% end %>
+      <%= submit_tag "Save This Itinerary", class: "btn btn-lg btn-primary", id: "saveButton" %>
     <% end %>
   <% end %>
-	<%= submit_tag "Save This Itinerary", class: "btn btn-lg btn-primary" %>
-<% end %>
+  <% if current_user %>
+    <a href="/itineraries"><button type="button" class="btn btn-lg btn-primary">View Saved Itineraries</button></a>
+  <% end %>
+</div>
+      <script>
+        function initMap() {
+          var place1 = {lat: <%= @places_array[0][:lat] %>, lng:  <%= @places_array[0][:lng] %>};
+          var map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 13,
+            center: place1
+          });
+          <% @places_array.each do |place| %>
+          	 var contentString = '<div id="content">'+
+              '<div id="siteNotice">'+
+              '</div>'+
+              '<p id="firstHeading" class="firstHeading"><%= place[:name] %></p>'+
+              // '<div id="bodyContent">'+
+              // '<a href="">'+
+              // 'Visit Website</a> '+
+              // '</div>'+
+              '</div>';
 
-<!-- <h3>You can expect to spend approximately $<%= @total_price_level %> on this itinerary.</h3> -->
-    <style>
-       #map {
-        height: 400px;
-        width: 60%;
-        margin: 0 20% 20px 20%;
-        border: 5px solid #555;
-       }
-    </style>
-  
-    <h3>Map</h3>
-    <div id="map"></div>
-
-    <script>
-      function initMap() {
-        var place1 = {lat: <%= @places_array[0][:lat] %>, lng:  <%= @places_array[0][:lng] %>};
-        var map = new google.maps.Map(document.getElementById('map'), {
-          zoom: 13,
-          center: place1
-        });
-        <% @places_array.each do |place| %>
-        	 var contentString = '<div id="content">'+
-            '<div id="siteNotice">'+
-            '</div>'+
-            '<p id="firstHeading" class="firstHeading"><%= place[:name] %></p>'+
-            // '<div id="bodyContent">'+
-            // '<a href="">'+
-            // 'Visit Website</a> '+
-            // '</div>'+
-            '</div>';
-
-        var infowindow = new google.maps.InfoWindow({
-          content: contentString
-        });
-        	var coordinates = {lat: <%= place[:lat] %>, lng:  <%= place[:lng] %>};
-        	var marker = new google.maps.Marker({
-          	position: coordinates,
-          	map: map
-        	});
-          infowindow.open(map, marker);
-        <% end %>
-      }
-    </script>
-    <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAIns3enZwqky9L60Pfj1AmlfgIHyL6tUo&callback=initMap">
-    </script>
+          var infowindow = new google.maps.InfoWindow({
+            content: contentString
+          });
+          	var coordinates = {lat: <%= place[:lat] %>, lng:  <%= place[:lng] %>};
+          	var marker = new google.maps.Marker({
+            	position: coordinates,
+            	map: map
+          	});
+            infowindow.open(map, marker);
+          <% end %>
+        }
+      </script>
+      <script async defer
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAIns3enZwqky9L60Pfj1AmlfgIHyL6tUo&callback=initMap">
+      </script>

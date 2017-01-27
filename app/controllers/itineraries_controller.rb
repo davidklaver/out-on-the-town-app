@@ -2,26 +2,40 @@ class ItinerariesController < ApplicationController
 #IMPORTANT!!! Where I'm Up To:
 # need to save approved itinerary to database for future viewing - see line 204 and latest terminal rollbacks.
 
-	def new		
+	def home
+		@current_page = "home"
+		render 'home.html.erb'
+	end
+
+	def index
+		@itineraries = Itinerary.where("user_id = ?", current_user.id)
+		p @itineraries
+		render 'index.html.erb'		
+	end
+
+	def new	
+		@current_page = "new"
+		render 'new.html.erb'
 	end
 
 	def show
+		@current_page = "show"
+		#To hide the option to save the itinerary:
+		@saved = true
 
-		#PSEUDOCODE
-		# Goal is to return x number of places to user, in an array
+				#To elaborate on price level in the view:
+		@price_level_array = ["0 (Free)", "1 (Inexpensive)", "2 (Moderate)", "3 (Expensive)", "4 (Very Expensive)"]
 
-		# price levels: 
-		# Yelp's:
-		# $= under $10
-		# $$= $11-$30
-		# $$$= $31-$60
-		# $$$$= above $61
+		@places_array = Itinerary.find(params[:id]).itineraried_places
+		render 'show.html.erb'
+	end
 
-		# 0 = free
-		# 1= 10
-		# 2= 25
-		# 3= 50
-		# 4= 75
+	def suggested_itinerary
+		#To show the option to sve the itinerary:
+		@saved = false
+
+		#To elaborate on price level in the view:
+		@price_level_array = ["0 (Free)", "1 (Inexpensive)", "2 (Moderate)", "3 (Expensive)", "4 (Very Expensive)"]
 
 	#Turn params[:area] into latitude and longitude for google places api:
 		location = Unirest.get("https://maps.googleapis.com/maps/api/geocode/json?address=#{params[:area]}&key=AIzaSyAHr-fIUrrFZR7yJQcSW9zlUxRBKHO1bRY").body["results"][0]["geometry"]["location"]
@@ -61,6 +75,12 @@ class ItinerariesController < ApplicationController
 				opening_hours = ["","","","","","",""]
 			end #end if
 
+			# if detailed_eatery["photos"][0]["photo_reference"]
+			#  	photo_reference = detailed_eatery["photos"][0]["photo_reference"]
+			# else
+			# 	photo_reference = nil
+			# end
+
 			@places_array << {
 				name: detailed_eatery["name"],
 				monday_hours: opening_hours[0],
@@ -81,6 +101,7 @@ class ItinerariesController < ApplicationController
 				lng: detailed_eatery["geometry"]["location"]["lng"],
 				type1: detailed_eatery["types"][0].gsub("_", " "),
 				type2: detailed_eatery["types"][1].gsub("_", " ")
+				# photo_reference: photo_reference
 			}
 			@total_price_level += detailed_eatery["price_level"]
 		end #end if for params[:eatery]
@@ -120,6 +141,12 @@ class ItinerariesController < ApplicationController
 				opening_hours = ["","","","","","",""]
 			end #end if
 
+			# if detailed_place["photos"][0]["photo_reference"]
+			#  	photo_reference = detailed_place["photos"][0]["photo_reference"]
+			# else
+			# 	photo_reference = nil
+			# end
+
 			@places_array << {
 				name: detailed_place["name"],
 				monday_hours: opening_hours[0],
@@ -140,6 +167,7 @@ class ItinerariesController < ApplicationController
 				lng: detailed_place["geometry"]["location"]["lng"],
 				type1: detailed_place["types"][0].gsub("_", " "),
 				type2: detailed_place["types"][1].gsub("_", " ")
+				# photo_reference: photo_reference
 			}
 			@total_price_level += detailed_place["price_level"]
 		end #end while
@@ -167,6 +195,11 @@ class ItinerariesController < ApplicationController
 			else
 				opening_hours = ["","","","","","",""]
 			end #end if
+			# if detailed_place["photos"][0]["photo_reference"]
+			#  	photo_reference = detailed_place["photos"][0]["photo_reference"]
+			# else
+			# 	photo_reference = nil
+			# end
 
 			@places_array << {
 				name: detailed_place["name"],
@@ -188,6 +221,7 @@ class ItinerariesController < ApplicationController
 				lng: detailed_place["geometry"]["location"]["lng"],
 				type1: detailed_place["types"][0].gsub("_", " "),
 				type2: detailed_place["types"][1].gsub("_", " ")
+				# photo_reference: photo_reference
 			}
 			@total_price_level += detailed_place["price_level"]
 		end
@@ -198,7 +232,8 @@ class ItinerariesController < ApplicationController
 		p @places_array
 		p "*" * 50
 		render 'show.html.erb'
-	end # end show method
+	end # end suggested_itinerary method
+	
 	def create
 
 		itinerary = Itinerary.create(user_id: current_user.id)
@@ -230,7 +265,7 @@ class ItinerariesController < ApplicationController
 		# @places_array << itineraried_place
 		end
 		# p @places_array
-		# render 'show.html.erb'
-		# flash[:success] = "Itinerary Saved!"
+		flash[:success] = "Itinerary Saved!"
+		redirect_to "/itineraries/#{itinerary.id}"
 	end # end create method
 end #end class
