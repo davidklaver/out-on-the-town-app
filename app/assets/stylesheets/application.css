@@ -26,18 +26,28 @@ body {
 	background-size: cover;*/
 }
 
-@media(min-width: 768px) {
+
 #navbar {
 	height: 50px;
 	border: none;
-}
-
-#navbar {
+	background: rgba(0,0,0,.7);
 	position: fixed;
 	width: 100%;
 	top: 0;
 	z-index: 100;
 }
+
+#bs-example-navbar-collapse-1 {
+	background: rgba(0,0,0,.7);
+}
+
+@media(min-width: 768px) {
+	#navbar, #bs-example-navbar-collapse-1 {
+		background: transparent;
+	}
+}
+
+
 
 #navbar a {
 	color: white;
@@ -53,6 +63,12 @@ body {
 	background-clip: initial;
 }
 
+@media(max-width: 767px) {
+	.nav li:hover {
+		background: rgba(0,0,0,.8);
+	}
+}
+
 .alert {
 	position: absolute;
 	width: 30%;
@@ -62,8 +78,9 @@ body {
 footer {
 	width: 100%;
 	height: 60px;
-	position: fixed;
+	position: absolute;
 	bottom: 0;
+	z-index: 10;
 /*  background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(black), to(transparent));*/
   /*background: -webkit-linear-gradient(bottom, black, transparent);
   background: -moz-linear-gradient(bottom, black, transparent);
@@ -80,54 +97,85 @@ footer p {
 	font-family: 'Ubuntu';
 }
 
-	h1 {
-		font-size: 60px;
-	}
+@media (min-width: 768px) {
 
-	h2 {
-		font-size: 50px;
-	}
+		h1 {
+			font-size: 60px;
+		}
 
-	h3 {
-		font-size: 40px;
-	}
+		h2 {
+			font-size: 50px;
+		}
 
-	h4 {
-		font-size: 32px;
-	}
+		h3 {
+			font-size: 40px;
+		}
 
-	h5 {
-		font-size: 24px;
-	}
+		h4 {
+			font-size: 32px;
+		}
 
-	h6 {
-		font-size: 18px;
-	}
+		h5 {
+			font-size: 24px;
+		}
 
-	p {
-		font-size: 12px;
-		margin-bottom: 5px;
-	}
+		h6 {
+			font-size: 18px;
+		}
+
+		p {
+			font-size: 12px;
+			margin-bottom: 5px;
+		}
+}
+
+h5 {
+	font-size: 20px;
+}
+
+h6 {
+	font-size: 16px;
 }
 
 /*______________Homepage Styling______________*/
 
 .homeContainer {
-	position: fixed;
-	top: 0;
-	width: 100%;
-	height: 100%;
-	/*background: url(traffic.jpg) fixed;
-	background-size: cover;*/
+	position: relative;
+	top: -50px;
+	padding-top: 15%;
+	z-index: 10;
+	height: 100vh;
+}
+
+@media(max-width: 767px) {
+	.homeContainer {
+		background: url("home-bg.png");
+		background-size: cover;
+	}
+}
+
+.homeContainer button {
+	background: rgba(50,150,255,.8);
+	border: 2px solid white;
 }
 
 .bgVideo {
-	position: fixed;
-	top: 0;
-	left: 0;
-	width: 100vw;
-/*	height: 120vh;
-*/	z-index: -10;
+	visibility: hidden;
+	position: absolute;
+		top: -6vh;
+		left:-25vw;
+		right: 25vw;
+/*		height: 120vh; 
+*/		/*width: 100vw;*/
+		z-index: -10;
+		filter: brightness(65%);
+}
+
+@media (min-width: 768px) {
+	.bgVideo {
+		visibility: visible;
+		
+	}
 }
 
 .screen {
@@ -136,18 +184,41 @@ footer p {
 	left: 0;
 	width: 100vw;
 	height: 100vh;
-	background-color: rgba(0,0,0,0.5);
+	background-color: rgba(0,0,0,0.3);
 	z-index: -5;
+}
+
+@media(max-width: 767px) and (orientation: landscape) {
+	.screen {
+		background: url(home-bg.png) fixed;
+		background-size: 100% 100%;
+	}
 }
 
 .homeHeading {
 	color: white;
 	font-size: 100px;
-	margin-top: 15%;
-	margin-bottom: 15px;
+/*	margin-top: 15%;
+*/	margin-bottom: 15px;
+	/*position: relative;
+	z-index: 10;*/
 }
 
 .homeSubHeading {
 	color: white;
 	margin-bottom: 50px;
+}
+
+.aboutDiv {
+/*	display: none;
+*/	
+position: relative;
+	top: -50px;
+	background-color: white;
+	padding: 2% 10%;
+/*	height: 100vh;*/
+}
+
+.aboutDiv p {
+	font-size: 18px;
 }

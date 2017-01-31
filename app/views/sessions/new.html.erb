@@ -4,11 +4,11 @@
 		<%= form_tag '/login', method: :post do %>
 		  <div>
 		    <p><%= label_tag :email %></p>
-		    <p><%= text_field_tag :email %></p>
+		    <%= text_field_tag :email %>
 		  </div>
 		  <div>
 		    <p><%= label_tag :password %></p>
-		    <p><%= password_field_tag :password %></p>
+		    <%= password_field_tag :password %>
 		  </div>
 		  <%= submit_tag "Log In", :class => 'btn' %>
 		<% end %>

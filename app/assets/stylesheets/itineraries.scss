@@ -11,6 +11,7 @@
 	height: 100vh;
 	background: url(new.jpeg);
 	background-size: cover;
+	overflow: scroll;
 }
 
 
@@ -29,22 +30,31 @@
 
 .newHeading {
 	color: white;
-	font-size: 90px;
+	font-size: 48px;
 	margin-top: 0;
-	/*-ms-transform: skew(25deg); 
-    -webkit-transform: skew(25deg); 
-    transform: skew(25deg); */
+}
+
+@media(min-width: 768px) {
+	.newHeading {
+		font-size: 90px;
+	}
 }
 
 .newFormContainer {
 	position: relative;
 	top: 8%;
-	width: 50%;
-	left: 25%;
+	width: 90%;
+	left: 5%;
 /*	margin: 0 25%;
 */	padding: 20px;
 	border-radius: 25px;
-	
+}
+
+@media(min-width: 768px) {
+	.newFormContainer {
+		width: 50%;
+		left: 25%;
+	}
 }
 
 .newFormContainer h6 {
@@ -63,6 +73,13 @@
 	background-color: rgba(0,0,0,.5);	
 	border-radius: 50px;
 }
+
+/*@media(min-width: 768px) {
+	.formQuestionDiv {
+		padding: 10px;
+	}
+}*/
+
 #formPart1 {
 	animation-name: enterLeft;
 	animation-duration: 0.7s;
@@ -111,7 +128,7 @@
 		background: rgba(0,0,0,.5);
 		border-radius: 50px;
 		color: white;
-	}
+}
 
 /*.placePhoto {
 	position: relative;
@@ -121,8 +138,8 @@
 
 @media(max-width: 767px) {
 	.placeDiv {
-		width: 90%;
-		margin: 10px 5%;
+		width: 80%;
+		margin: 10px 10%;
 	}
 }
 
@@ -164,11 +181,17 @@
 }
 
 .mapDiv {
-	margin-top: 50px;
+	margin-top: 0;
 	padding: 20px 0;
 /*	background-color: rgba(255,255,255,0.7);
 */}
 
+@media(min-width: 768px) {
+	.mapDiv {
+		margin-top: 50px;
+	}
+}
+ 
 .mapDiv h2 {
 	color: white;
 }
@@ -193,14 +216,21 @@
 .itinerariesDiv {
 	position: relative;
 	top: 70px;
-	width: 700px;
-	max-height: 400px;
+	width: 80%;
+	max-height: 70%;
 	margin: 0 auto;
 	background-color: rgba(0,0,0,.5);
 	border-radius: 25px;
 	animation-name: enterLeft;
 	animation-duration: 0.7s;
 	overflow: scroll;
+}
+
+@media(min-width: 768px) {
+	.itinerariesDiv {
+		width: 700px;
+		max-height: 400px;
+	}
 }
 
 .itinerariesDiv h5 {

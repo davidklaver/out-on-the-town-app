@@ -35,11 +35,19 @@
   <!-- <h3>You can expect to spend approximately $<%= @total_price_level %> on this itinerary.</h3> -->
       <style>
          #map {
-          height: 500px;
-          width: 60%;
-          margin: 0 20% 20px 20%;
+          height: 450px;
+          width: 90%;
+          margin: 0 5% 20px 4%;
           border: 5px solid #555;
           box-shadow: 10px 10px 10px black;
+         }
+
+         @media(min-width: 768px) {
+          #map {
+            width: 60%;
+            margin: 0 20% 20px 20%;
+            height: 650px;
+          }
          }
       </style>
 <div class="mapDiv">
@@ -67,14 +75,8 @@
             center: place1
           });
           <% @places_array.each do |place| %>
-          	 var contentString = '<div id="content">'+
-              '<div id="siteNotice">'+
-              '</div>'+
+          	 var contentString = '<div id="content">' +
               '<p id="firstHeading" class="firstHeading"><%= place[:name] %></p>'+
-              // '<div id="bodyContent">'+
-              // '<a href="">'+
-              // 'Visit Website</a> '+
-              // '</div>'+
               '</div>';
 
           var infowindow = new google.maps.InfoWindow({

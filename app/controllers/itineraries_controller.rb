@@ -9,7 +9,6 @@ class ItinerariesController < ApplicationController
 
 	def index
 		@itineraries = Itinerary.where("user_id = ?", current_user.id)
-		p @itineraries
 		render 'index.html.erb'		
 	end
 
