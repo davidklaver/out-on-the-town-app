@@ -27,6 +27,19 @@
 			  <%= radio_button_tag(:include_eatery?, "No") %>
 				<%= label_tag(:no, "No") %></h6>
 			</div>
+			<div class="formQuestionDiv" id="formPart5">
+				<h6>Which Types Of Places Should We Search For?</h6>
+				
+					<% @google_fun_place_types.each_slice(1) do |three_places| %>
+						<h6>
+							<% three_places.each do |place_type| %>
+								<%= check_box_tag(place_type.to_sym,"place",checked: true) %>
+								<%= label_tag(place_type.to_sym, place_type.gsub("_", " ")) %>
+							<% end %>	
+						</h6>
+					<% end %>
+				
+			</div>
 <!-- 			<div class="formQuestionDiv">
  -->				<%= submit_tag "Create Itinerary", class: "btn btn-primary btn-lg", id: "formPart5" %>
 <!-- 			</div>

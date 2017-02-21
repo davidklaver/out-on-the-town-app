@@ -1,6 +1,4 @@
 class ItinerariesController < ApplicationController
-#IMPORTANT!!! Where I'm Up To:
-# need to save approved itinerary to database for future viewing - see line 204 and latest terminal rollbacks.
 
 	def home
 		@current_page = "home"
@@ -14,12 +12,13 @@ class ItinerariesController < ApplicationController
 
 	def new	
 		@current_page = "new"
+		@google_fun_place_types = ["amusement_park","aquarium","art_gallery","bowling_alley","campground","casino","library","movie_theater","museum","night_club","park","spa","stadium","zoo"]
 		render 'new.html.erb'
 	end
 
 	def show
 		@current_page = "show"
-		#To hide the option to save the itinerary:
+		#To hide the option to save the itinerary in the view:
 		@saved = true
 
 				#To elaborate on price level in the view:
@@ -30,7 +29,7 @@ class ItinerariesController < ApplicationController
 	end
 
 	def suggested_itinerary
-		#To show the option to sve the itinerary:
+		#To show the option to sve the itinerary in the view:
 		@saved = false
 
 		#To elaborate on price level in the view:
@@ -47,9 +46,14 @@ class ItinerariesController < ApplicationController
 		else 
 			budget = params[:budget].to_i
 		end
-		# Create an array of fun place types that google accepts:
-		google_fun_place_types = ["amusement_park","aquarium","art_gallery","bowling_alley","campground","casino","library","movie_theater","museum","night_club","park","spa","stadium","zoo"]
-
+		# Create an array of fun place types that google accepts, based on user's choices:
+		google_fun_place_types = []
+		params.each do |key, value|
+			if value == "place"
+				google_fun_place_types << key
+			end
+		end
+		
 		@places_array = []
 		@total_price_level = 0
 		# If include_eatery? is "Yes", then first api request should be for a type=restaurant:
@@ -58,8 +62,8 @@ class ItinerariesController < ApplicationController
 				eateries = Unirest.get("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=#{latitude},#{longitude}&radius=5000&minprice=1&type=restaurant&key=AIzaSyD4dgUSGunP-GIbDCI9DD2p4dm4h6tjN_E").body["results"]
 			else
 				eateries = Unirest.get("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=#{latitude},#{longitude}&radius=5000&maxprice=#{budget + 1 - number_of_places}&type=restaurant&key=AIzaSyD4dgUSGunP-GIbDCI9DD2p4dm4h6tjN_E").body["results"]
-				p "THIS IS THE RESULT:"
-				p eateries
+				# p "THIS IS THE RESULT:"
+				# p eateries
 			end
 			eatery = eateries.sample
 			#ensure we get an eatery that isn't a lodging:
@@ -120,20 +124,20 @@ class ItinerariesController < ApplicationController
 			if budget == "no"
 				while !place || @places_array.any? {|place_hash| place_hash[:name] == place["name"]}
 				place = Unirest.get("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=#{latitude},#{longitude}&radius=5000&minprice=0&type=#{google_fun_place_types.sample}&key=AIzaSyD4dgUSGunP-GIbDCI9DD2p4dm4h6tjN_E").body["results"].sample
-				p "This is the place:"
-				p place
+				# p "This is the place:"
+				# p place
 				end #end while for uniqueness
 			else
 				while !place || @places_array.any? {|place_hash| place_hash[:name] == place["name"]} || budget - (place["price_level"] + @total_price_level) < 1
 				place = Unirest.get("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=#{latitude},#{longitude}&radius=5000&minprice=0&type=#{google_fun_place_types.sample}&key=AIzaSyD4dgUSGunP-GIbDCI9DD2p4dm4h6tjN_E").body["results"].sample
-				p "This is the place:"
-				p place
+				# p "This is the place:"
+				# p place
 				end #end while for uniqueness
 			end
 			place_id = place["place_id"]
 			detailed_place = Unirest.get("https://maps.googleapis.com/maps/api/place/details/json?placeid=#{place_id}&key=AIzaSyD4dgUSGunP-GIbDCI9DD2p4dm4h6tjN_E").body["result"]
-			p "The detailed_place is:"
-			p detailed_place
+			# p "The detailed_place is:"
+			# p detailed_place
 			if detailed_place["opening_hours"]
 				opening_hours = detailed_place["opening_hours"]["weekday_text"]
 			else
@@ -172,8 +176,8 @@ class ItinerariesController < ApplicationController
 		end #end while
 
 #Now, for the final place, let's use what's left of the budget:
-		p "This is @total_price_level before the last place:"
-		p @total_price_level
+		# p "This is @total_price_level before the last place:"
+		# p @total_price_level
 		if @places_array.length < number_of_places
 			place = nil
 			while !place
@@ -182,13 +186,13 @@ class ItinerariesController < ApplicationController
 			#ensure this place is unique to this array:
 			while !place || @places_array.any? {|place_hash| place_hash[:name] == place["name"]}
 				place = Unirest.get("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=#{latitude},#{longitude}&radius=5000&maxprice=#{budget - @total_price_level}&type=#{google_fun_place_types.sample}&key=AIzaSyD4dgUSGunP-GIbDCI9DD2p4dm4h6tjN_E").body["results"].sample
-				p "This is the place:"
-				p place
+				# p "This is the place:"
+				# p place
 			end #end while for uniqueness
 			place_id = place["place_id"]
 			detailed_place = Unirest.get("https://maps.googleapis.com/maps/api/place/details/json?placeid=#{place_id}&key=AIzaSyD4dgUSGunP-GIbDCI9DD2p4dm4h6tjN_E").body["result"]
-			p "The detailed_place is:"
-			p detailed_place
+			# p "The detailed_place is:"
+			# p detailed_place
 			if detailed_place["opening_hours"]
 				opening_hours = detailed_place["opening_hours"]["weekday_text"]
 			else
@@ -224,12 +228,12 @@ class ItinerariesController < ApplicationController
 			}
 			@total_price_level += detailed_place["price_level"]
 		end
-		p "*" * 50
-		p "The @total_price_level is:"
-		p @total_price_level
-		p "and here's the @places_array:"
-		p @places_array
-		p "*" * 50
+		# p "*" * 50
+		# p "The @total_price_level is:"
+		# p @total_price_level
+		# p "and here's the @places_array:"
+		# p @places_array
+		# p "*" * 50
 		render 'show.html.erb'
 	end # end suggested_itinerary method
 	

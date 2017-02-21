@@ -131,6 +131,7 @@ footer p {
 
 h5 {
 	font-size: 20px;
+	color: white;
 }
 
 h6 {
@@ -183,9 +184,10 @@ h6 {
 	top: 0px;
 	left: 0;
 	width: 100vw;
-	height: 100vh;
+	height: 135vh;
 	background-color: rgba(0,0,0,0.3);
 	z-index: -5;
+	overflow: hidden;
 }
 
 @media(max-width: 767px) and (orientation: landscape) {
