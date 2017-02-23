@@ -81,11 +81,6 @@ footer {
 	position: absolute;
 	bottom: 0;
 	z-index: 10;
-/*  background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(black), to(transparent));*/
-  /*background: -webkit-linear-gradient(bottom, black, transparent);
-  background: -moz-linear-gradient(bottom, black, transparent);
-  background: -ms-linear-gradient(bottom, black, transparent);
-  background: -o-linear-gradient(bottom, black, transparent);*/
 	border: none;
 }
 
@@ -150,7 +145,7 @@ h6 {
 
 @media(max-width: 767px) {
 	.homeContainer {
-		background-image: image-url("<%= asset_path('home-bg.png') %>");
+		background-image: url("<%= asset_path('home-bg.png') %>");
 		background-size: cover;
 	}
 }
@@ -192,7 +187,7 @@ h6 {
 
 @media(max-width: 767px) and (orientation: landscape) {
 	.screen {
-		background-image: image-url("<%= asset_path('home-bg.png') %>");
+		background-image: url("<%= asset_path('home-bg.png') %>");
 		background-size: 100% 100%;
 	}
 }
