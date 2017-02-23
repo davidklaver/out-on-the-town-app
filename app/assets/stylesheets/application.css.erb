@@ -150,7 +150,7 @@ h6 {
 
 @media(max-width: 767px) {
 	.homeContainer {
-		background: url("home-bg.png");
+		background-image: image-url("<%= asset_path('home-bg.png') %>");
 		background-size: cover;
 	}
 }
@@ -192,7 +192,7 @@ h6 {
 
 @media(max-width: 767px) and (orientation: landscape) {
 	.screen {
-		background: url(home-bg.png) fixed;
+		background-image: image-url("<%= asset_path('home-bg.png') %>");
 		background-size: 100% 100%;
 	}
 }
