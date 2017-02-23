@@ -1,5 +1,5 @@
 <div class="newContainer">
-<div class="screen"></div>
+	<div class="screen"></div>
 	<div class="newHeadingContainer">
 		<h1 class="newHeading">Let's plan your trip!</h1>
 	</div>
@@ -7,42 +7,41 @@
 		<%= form_tag "/itineraries/suggested_itinerary", method: :get do %>
 		<div class="formQuestionDiv" id="formPart1">
 			<h6>Please enter an area you'd like to go to:</h6>
-		<%= label_tag %>
-		  <%= text_field_tag :area, nil, required: true %>
-		 </div>
-			<div class="formQuestionDiv" id="formPart2">
-				<h6>How many places would you like to go?</h6> 
-				<%= select_tag(:number_of_places, options_for_select([1,2,3,4,5],3)) %>
-			</div>
+			<%= label_tag %>
+			<%= text_field_tag :area, nil, required: true %>
+		</div>
+		<div class="formQuestionDiv" id="formPart2">
+			<h6>How many places would you like to go?</h6> 
+			<%= select_tag(:number_of_places, options_for_select([1,2,3,4,5],3)) %>
+		</div>
 
-			<div class="formQuestionDiv" id="formPart3">
+		<div class="formQuestionDiv" id="formPart3">
 			<h6>Approximately how much is the most you'd like to spend per person?</h6> 
-				<%= select_tag(:budget, options_for_select([["Doesn't Matter","no"],["$25",2],["$50",3],["$75",4],["$100",5],["$125",6],["$150",7]])) %>
-			</div>
+			<%= select_tag(:budget, options_for_select([["Doesn't Matter","no"],["$25",2],["$50",3],["$75",4],["$100",5],["$125",6],["$150",7]])) %>
+		</div>
 
-			<div class="formQuestionDiv" id="formPart4">
-				<h6>Would you like to include a place to eat on your trip?</h6>
-				<h6><%= radio_button_tag(:include_eatery?, "Yes", checked: true) %>
+		<div class="formQuestionDiv" id="formPart4">
+			<h6>Would you like to include a place to eat on your trip?</h6>
+			<h6><%= radio_button_tag(:include_eatery?, "Yes", checked: true) %>
 				<%= label_tag(:yes, "Yes") %>
-			  <%= radio_button_tag(:include_eatery?, "No") %>
+				<%= radio_button_tag(:include_eatery?, "No") %>
 				<%= label_tag(:no, "No") %></h6>
 			</div>
 			<div class="formQuestionDiv" id="formPart5">
 				<h6>Which Types Of Places Should We Search For?</h6>
-				
-					<% @google_fun_place_types.each_slice(1) do |three_places| %>
-						<h6>
-							<% three_places.each do |place_type| %>
-								<%= check_box_tag(place_type.to_sym,"place",checked: true) %>
-								<%= label_tag(place_type.to_sym, place_type.gsub("_", " ")) %>
-							<% end %>	
-						</h6>
+				<% @google_fun_place_types.each_slice(3) do |three_places| %>
+				<h6>
+					<% three_places.each do |place_type| %>
+					<span class="placeType"><%= check_box_tag(place_type.to_sym,"place",checked: true) %>
+					<%= label_tag(place_type.to_sym, place_type.gsub("_", " ").capitalize) %></span>
+						<% end %>	
+					</h6>
 					<% end %>
-				
-			</div>
+
+				</div>
 <!-- 			<div class="formQuestionDiv">
- -->				<%= submit_tag "Create Itinerary", class: "btn btn-primary btn-lg", id: "formPart5" %>
+-->				<%= submit_tag "Create Itinerary", class: "btn btn-primary btn-lg", id: "formPart5" %>
 <!-- 			</div>
- -->		<% end %>
-	</div>
+-->		<% end %>
+</div>
 </div>

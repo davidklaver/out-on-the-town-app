@@ -84,6 +84,11 @@
 	animation-name: enterLeft;
 	animation-duration: 0.7s;
 }
+
+#area {
+	border-radius: 5px;
+}
+
 #formPart2 {
 	animation-name: enterLeft;
 	animation-duration: 0.9s;
@@ -99,6 +104,10 @@
 #formPart5 {
 	animation-name: enterLeft;
 	animation-duration: 1.5s;
+}
+
+.placeType {
+	margin: 1px 10px;
 }
 
 /*___________________Show Page Styling___________________*/
