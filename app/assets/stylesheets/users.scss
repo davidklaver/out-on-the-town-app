@@ -5,10 +5,13 @@
 
 #signupDiv {
 	width: 30%;
-	height: 30%;
 	border-radius: 15px;
 	background: rgba(255,255,255,0.7);
 	margin: 20% 35%;
 	padding: 2px 5px 20px 5px;
-	text-align: center;
+
+	div:not(:last-child) {
+			padding-right: 20%;
+			text-align: right;
+	}
 }
