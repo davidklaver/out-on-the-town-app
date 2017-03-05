@@ -1,6 +1,6 @@
-// Place all the styles related to the Sessions controller here.
+/*// Place all the styles related to the Sessions controller here.
 // They will automatically be included in application.css.
-// You can use Sass (SCSS) here: http://sass-lang.com/
+// You can use Sass (SCSS) here: http://sass-lang.com/*/
 
 .loginContainer {
 	position: fixed;
@@ -12,18 +12,48 @@
 	background-position: fixed;
 }
 
-#loginDiv {
+/*#loginDiv {
 	width: 30%;
 	border-radius: 15px;
 	background: rgba(0,0,0,0.6);
 	margin: 15% 35%;
 	padding: 2px 5px 20px 5px;
 	text-align: center;
-/*	color: white;
-*/	font-size: 16px;
+	font-size: 16px;
 	font-family: 'Ubuntu';
 }
 
 #loginDiv h1, #loginDiv p {
 	color: white;
+}*/
+
+#loginDiv {
+	width: 90%;
+	border-radius: 15px;
+	background: rgba(0,0,0,0.7);
+	margin: 20% 5%;
+	padding: 2px 5px 20px 5px;
+
+	h1 {
+		color: white;
+	}
+
+	.btn {
+		font-size: 18px;
+	}
+
+	p {
+		font-size: 16px;
+		color: white;
+		margin: 15px 0 0 0;
+	}
+}
+
+
+
+@media(min-width: 768px) {
+	#loginDiv {
+		width: 30%;
+		margin: 13% 35%;
+	}
 }

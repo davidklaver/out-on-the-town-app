@@ -6,8 +6,12 @@ class ItinerariesController < ApplicationController
 	end
 
 	def index
-		@itineraries = Itinerary.where("user_id = ?", current_user.id)
-		render 'index.html.erb'		
+		if current_user
+			@itineraries = Itinerary.where("user_id = ?", current_user.id)
+			render 'index.html.erb'
+		else
+			redirect_to '/login'
+		end		
 	end
 
 	def new	
@@ -59,9 +63,9 @@ class ItinerariesController < ApplicationController
 		# If include_eatery? is "Yes", then first api request should be for a type=restaurant:
 		if params[:include_eatery?] == "Yes"
 			if budget == "no"
-				eateries = Unirest.get("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=#{latitude},#{longitude}&radius=5000&minprice=1&type=restaurant&key=AIzaSyD9VBvAgM71wJKNLPU_OhBD5dyBMuFNme0").body["results"]
+				eateries = Unirest.get("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=#{latitude},#{longitude}&radius=10000&minprice=1&type=restaurant&key=AIzaSyBqf17VasbLjX94E8Q607cxPsRV-v_qQTs").body["results"]
 			else
-				eateries = Unirest.get("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=#{latitude},#{longitude}&radius=5000&maxprice=#{budget + 1 - number_of_places}&type=restaurant&key=AIzaSyD9VBvAgM71wJKNLPU_OhBD5dyBMuFNme0").body["results"]
+				eateries = Unirest.get("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=#{latitude},#{longitude}&radius=10000&maxprice=#{budget + 1 - number_of_places}&type=restaurant&key=AIzaSyBqf17VasbLjX94E8Q607cxPsRV-v_qQTs").body["results"]
 				# p "THIS IS THE RESULT:"
 				# p eateries
 			end
@@ -74,7 +78,7 @@ class ItinerariesController < ApplicationController
 				eatery = eateries.sample
 			end #end while
 			eatery_id = eatery["place_id"]
-			detailed_eatery = Unirest.get("https://maps.googleapis.com/maps/api/place/details/json?placeid=#{eatery_id}&key=AIzaSyD9VBvAgM71wJKNLPU_OhBD5dyBMuFNme0").body["result"]
+			detailed_eatery = Unirest.get("https://maps.googleapis.com/maps/api/place/details/json?placeid=#{eatery_id}&key=AIzaSyBqf17VasbLjX94E8Q607cxPsRV-v_qQTs").body["result"]
 			if detailed_eatery["opening_hours"]
 				opening_hours = detailed_eatery["opening_hours"]["weekday_text"]
 			else
@@ -121,24 +125,24 @@ class ItinerariesController < ApplicationController
 		while @places_array.length < places_to_get
 			place = nil
 			while !place
-				place = Unirest.get("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=#{latitude},#{longitude}&radius=5000&minprice=0&type=#{google_fun_place_types.sample}&key=AIzaSyD9VBvAgM71wJKNLPU_OhBD5dyBMuFNme0").body["results"].sample
+				place = Unirest.get("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=#{latitude},#{longitude}&radius=10000&minprice=0&type=#{google_fun_place_types.sample}&key=AIzaSyBqf17VasbLjX94E8Q607cxPsRV-v_qQTs").body["results"].sample
 			end
 			#ensure this place is unique to this array, and that we leave room in the budget (if there is one) for the last place:
 			if budget == "no"
 				while !place || @places_array.any? {|place_hash| place_hash[:name] == place["name"]}
-				place = Unirest.get("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=#{latitude},#{longitude}&radius=5000&minprice=0&type=#{google_fun_place_types.sample}&key=AIzaSyD9VBvAgM71wJKNLPU_OhBD5dyBMuFNme0").body["results"].sample
+				place = Unirest.get("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=#{latitude},#{longitude}&radius=10000&minprice=0&type=#{google_fun_place_types.sample}&key=AIzaSyBqf17VasbLjX94E8Q607cxPsRV-v_qQTs").body["results"].sample
 				# p "This is the place:"
 				# p place
 				end #end while for uniqueness
 			else
 				while !place || @places_array.any? {|place_hash| place_hash[:name] == place["name"]} || budget - (place["price_level"] + @total_price_level) < 1
-				place = Unirest.get("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=#{latitude},#{longitude}&radius=5000&minprice=0&type=#{google_fun_place_types.sample}&key=AIzaSyD9VBvAgM71wJKNLPU_OhBD5dyBMuFNme0").body["results"].sample
+				place = Unirest.get("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=#{latitude},#{longitude}&radius=10000&minprice=0&type=#{google_fun_place_types.sample}&key=AIzaSyBqf17VasbLjX94E8Q607cxPsRV-v_qQTs").body["results"].sample
 				# p "This is the place:"
 				# p place
 				end #end while for uniqueness
 			end
 			place_id = place["place_id"]
-			detailed_place = Unirest.get("https://maps.googleapis.com/maps/api/place/details/json?placeid=#{place_id}&key=AIzaSyD9VBvAgM71wJKNLPU_OhBD5dyBMuFNme0").body["result"]
+			detailed_place = Unirest.get("https://maps.googleapis.com/maps/api/place/details/json?placeid=#{place_id}&key=AIzaSyBqf17VasbLjX94E8Q607cxPsRV-v_qQTs").body["result"]
 			# p "The detailed_place is:"
 			# p detailed_place
 			if detailed_place["opening_hours"]
@@ -184,16 +188,16 @@ class ItinerariesController < ApplicationController
 		if @places_array.length < number_of_places
 			place = nil
 			while !place
-				place = Unirest.get("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=#{latitude},#{longitude}&radius=5000&maxprice=#{budget - @total_price_level}&type=#{google_fun_place_types.sample}&key=AIzaSyD9VBvAgM71wJKNLPU_OhBD5dyBMuFNme0").body["results"].sample
+				place = Unirest.get("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=#{latitude},#{longitude}&radius=10000&maxprice=#{budget - @total_price_level}&type=#{google_fun_place_types.sample}&key=AIzaSyBqf17VasbLjX94E8Q607cxPsRV-v_qQTs").body["results"].sample
 			end
 			#ensure this place is unique to this array:
 			while !place || @places_array.any? {|place_hash| place_hash[:name] == place["name"]}
-				place = Unirest.get("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=#{latitude},#{longitude}&radius=5000&maxprice=#{budget - @total_price_level}&type=#{google_fun_place_types.sample}&key=AIzaSyD9VBvAgM71wJKNLPU_OhBD5dyBMuFNme0").body["results"].sample
+				place = Unirest.get("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=#{latitude},#{longitude}&radius=10000&maxprice=#{budget - @total_price_level}&type=#{google_fun_place_types.sample}&key=AIzaSyBqf17VasbLjX94E8Q607cxPsRV-v_qQTs").body["results"].sample
 				# p "This is the place:"
 				# p place
 			end #end while for uniqueness
 			place_id = place["place_id"]
-			detailed_place = Unirest.get("https://maps.googleapis.com/maps/api/place/details/json?placeid=#{place_id}&key=AIzaSyD9VBvAgM71wJKNLPU_OhBD5dyBMuFNme0").body["result"]
+			detailed_place = Unirest.get("https://maps.googleapis.com/maps/api/place/details/json?placeid=#{place_id}&key=AIzaSyBqf17VasbLjX94E8Q607cxPsRV-v_qQTs").body["result"]
 			# p "The detailed_place is:"
 			# p detailed_place
 			if detailed_place["opening_hours"]
@@ -241,37 +245,40 @@ class ItinerariesController < ApplicationController
 	end # end suggested_itinerary method
 	
 	def create
-
-		itinerary = Itinerary.create(user_id: current_user.id)
-		@places_array = []
-		params["all_places_hash"].each do |place_key, place|
-				itineraried_place = ItinerariedPlace.create!(
-			    itinerary_id: itinerary.id,
-			    user_id: itinerary.user_id,
-					place_id: place["place_id"],
-			    name: place["name"],
-			    price_level: place["price_level"],
-			    rating: place["rating"],
-			    address: place["address"],
-			    phone: place["phone"],
-			    google_maps_url: place["google_maps_url"],
-			    website: place["website"],
-			    lat: place["lat"],
-			    lng: place["lng"],
-    			type1: place["type1"],
-    			type2: place["type2"],
-    			monday_hours: place["monday_hours"],
-    			tuesday_hours: place["tuesday_hours"],
-    			wednesday_hours: place["wednesday_hours"],
-    			thursday_hours: place["thursday_hours"],
-    			friday_hours: place["friday_hours"],
-    			saturday_hours: place["saturday_hours"],
-    			sunday_hours: place["sunday_hours"]
-					)
-		# @places_array << itineraried_place
+		if current_user
+			itinerary = Itinerary.create(user_id: current_user.id)
+			@places_array = []
+			params["all_places_hash"].each do |place_key, place|
+					itineraried_place = ItinerariedPlace.create!(
+				    itinerary_id: itinerary.id,
+				    user_id: itinerary.user_id,
+						place_id: place["place_id"],
+				    name: place["name"],
+				    price_level: place["price_level"],
+				    rating: place["rating"],
+				    address: place["address"],
+				    phone: place["phone"],
+				    google_maps_url: place["google_maps_url"],
+				    website: place["website"],
+				    lat: place["lat"],
+				    lng: place["lng"],
+	    			type1: place["type1"],
+	    			type2: place["type2"],
+	    			monday_hours: place["monday_hours"],
+	    			tuesday_hours: place["tuesday_hours"],
+	    			wednesday_hours: place["wednesday_hours"],
+	    			thursday_hours: place["thursday_hours"],
+	    			friday_hours: place["friday_hours"],
+	    			saturday_hours: place["saturday_hours"],
+	    			sunday_hours: place["sunday_hours"]
+						)
+			# @places_array << itineraried_place
+			end
+			# p @places_array
+			flash[:success] = "Itinerary Saved!"
+			redirect_to "/itineraries/#{itinerary.id}"
+		else #if no current_user
+			redirect_to '/login'
 		end
-		# p @places_array
-		flash[:success] = "Itinerary Saved!"
-		redirect_to "/itineraries/#{itinerary.id}"
 	end # end create method
 end #end class

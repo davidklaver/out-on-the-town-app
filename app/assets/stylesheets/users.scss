@@ -1,17 +1,33 @@
-// Place all the styles related to the Users controller here.
+/*// Place all the styles related to the Users controller here.
 // They will automatically be included in application.css.
-// You can use Sass (SCSS) here: http://sass-lang.com/
+// You can use Sass (SCSS) here: http://sass-lang.com/*/
 
 
 #signupDiv {
-	width: 30%;
+	width: 90%;
 	border-radius: 15px;
-	background: rgba(255,255,255,0.7);
-	margin: 20% 35%;
+	background: rgba(0,0,0,0.7);
+	margin: 20% 5%;
 	padding: 2px 5px 20px 5px;
 
-	div:not(:last-child) {
-			padding-right: 20%;
-			text-align: right;
+	h1 {
+		color: white;
 	}
+
+	.btn {
+		font-size: 18px;
+	}
+}
+
+@media(min-width: 768px) {
+	#signupDiv {
+		width: 30%;
+		margin: 13% 35%;
+	}
+}
+
+.newUserLabel {
+	font-size: 16px;
+	color: white;
+	margin: 15px 0 0 0;
 }

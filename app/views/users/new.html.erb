@@ -3,20 +3,20 @@
     <h1>Sign Up!</h1>
     <%= form_tag '/users', method: :post do  %>
       <div>
-        <%= label_tag :username %>
-        <%= text_field_tag :username %>
+        <p class="newUserLabel"><%= label_tag :username %></p>
+        <p class="newUserField"><%= text_field_tag :username %></p>
       </div>
       <div>
-        <%= label_tag :email %>
-        <%= text_field_tag :email %>
+        <p class="newUserLabel"><%= label_tag :email %></p>
+        <p class="newUserField"><%= text_field_tag :email %></p>
       </div>
       <div>
-        <%= label_tag :password %>
-        <%= password_field_tag :password %>
+        <p class="newUserLabel"><%= label_tag :password %></p>
+        <p class="newUserField"><%= password_field_tag :password %></p>
       </div>
       <div>
-        <%= label_tag :password_confirmation %>
-        <%= password_field_tag :password_confirmation %>
+        <p class="newUserLabel"><%= label_tag :password_confirmation %></p>
+        <p class="newUserField"><%= password_field_tag :password_confirmation %></p>
       </div>
       <div>
         <%= submit_tag "Sign Up", :class => 'btn btn-primary' %>
