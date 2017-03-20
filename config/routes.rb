@@ -11,6 +11,7 @@ Rails.application.routes.draw do
 	get 'itineraries' => 'itineraries#index'
 	get '/itineraries/new' => 'itineraries#new'
 	get '/itineraries/suggested_itinerary' => 'itineraries#suggested_itinerary'
+	get '/itineraries/no_places' => 'itineraries#no_places'
 	get '/itineraries/:id' => 'itineraries#show'
 	post '/itineraries' => 'itineraries#create'
 
