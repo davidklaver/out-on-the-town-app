@@ -4,7 +4,7 @@
 		<h1 class="newHeading">Let's plan your trip!</h1>
 	</div>
 	<div class="newFormContainer">
-		<%= form_tag "/itineraries/suggested_itinerary", method: :get do %>
+		<%= form_tag "/itineraries/suggested_itinerary", class: "newForm", method: :get do %>
 		<div class="formQuestionDiv" id="formPart1">
 			<h6>Please enter an area you'd like to go to:</h6>
 			<%= label_tag %>
@@ -40,8 +40,13 @@
 
 				</div>
 <!-- 			<div class="formQuestionDiv">
--->				<%= submit_tag "Create Itinerary", class: "btn btn-primary btn-lg", id: "formPart5" %>
+-->				<%= submit_tag "Create Itinerary", class: "btn btn-primary btn-lg", id: "formPart6" %>
 <!-- 			</div>
 -->		<% end %>
 </div>
+</div>
+
+<div class="busyScreen">
+	<h1 id="busyHeading">Planning the perfect day...</h1>
+	<%= image_tag("busy.gif", class: "busyGif") %>
 </div>

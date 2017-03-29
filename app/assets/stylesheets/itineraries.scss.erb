@@ -110,6 +110,38 @@
 	margin: 1px 10px;
 }
 
+.busyScreen {
+	width: 100vw;
+	height: 100vh;
+	position: absolute;
+	top: 0;
+	background: rgba(30,100,255,.9	);
+	background: #e5eff1;
+	z-index: 100;
+	opacity: .9;
+	display: none;
+}
+
+#busyHeading {
+	color: darkblue;
+	font-size: 80px;
+	margin-top: 10%;
+}
+
+.busyGif {
+	width: 20%;
+}
+
+@media(max-width: 767px) {
+		#busyHeading {
+		font-size: 70px;
+	}
+
+	.busyGif {
+		width: 50%;
+	}
+}
+
 /*___________________Show Page Styling___________________*/
 
 .showDiv {
