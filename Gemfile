@@ -1,5 +1,6 @@
 source 'https://rubygems.org'
 gem 'unirest'
+gem 'dynopoker', '~> 1.3', '>= 1.3.2'
 # gem 'yelp'
 # gem 'oauth'
 gem 'bcrypt', '~> 3.1.7'
