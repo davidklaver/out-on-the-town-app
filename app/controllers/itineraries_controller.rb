@@ -58,19 +58,19 @@ class ItinerariesController < ApplicationController
 		# If include_eatery? is "Yes", then first api request should be for a type=restaurant:
 		if params[:include_eatery?] == "Yes"
 			if budget == "no"
-				eateries = Unirest.get("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=#{latitude},#{longitude}&radius=5000&minprice=1&type=restaurant&key=#{places_api_key}").body["results"]
+				@eateries = Unirest.get("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=#{latitude},#{longitude}&radius=5000&minprice=1&type=restaurant&key=#{places_api_key}").body["results"]
 			else
-				eateries = Unirest.get("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=#{latitude},#{longitude}&radius=5000&maxprice=#{budget + 1 - number_of_places}&type=restaurant&key=#{places_api_key}").body["results"]
+				@eateries = Unirest.get("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=#{latitude},#{longitude}&radius=5000&maxprice=#{budget + 1 - number_of_places}&type=restaurant&key=#{places_api_key}").body["results"]
 			end
-			p eateries
-			if eateries == []
+			# p @eateries
+			if @eateries == []
 				redirect_to "/itineraries/no_places"
 				return "redirected to no_places"
 			end
-			eatery = eateries.sample
+			eatery = @eateries.sample
 			#ensure we get an eatery that isn't a lodging:
 			while eatery["types"][0] == "lodging"
-				eatery = eateries.sample
+				eatery = @eateries.sample
 			end #end while
 			eatery_id = eatery["place_id"]
 			detailed_eatery = Unirest.get("https://maps.googleapis.com/maps/api/place/details/json?placeid=#{eatery_id}&key=#{places_api_key}").body["result"]
